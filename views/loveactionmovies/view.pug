@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title let's see some action movies!
+    link(rel="stylesheet" href="/static/styles/movieIndex.css")
+  body
+    -
+      const staticPrefix = '/static/videos'
+    a(href=`${staticPrefix}/${fileName}`)= fileName
+    //- -
+    //-   const staticPrefix = '/static/videos'
+    //- -
+    //-   const dates = Object.keys(movieList)
+    //-   const sortedDates = dates.sort((a, b) => new Date(b) - new Date(a))
+    //- each item in sortedDates
+    //-   .container
+    //-     p= item
+    //-   -
+    //-     const thisDateList = movieList[item]
+    //-     //- console.log(thisDateList)
+    //-   each item in thisDateList
+    //-     p
+    //-       a(href=`${staticPrefix}/${item.fileName}`)= `${[item.fileName]}`
+
+    //- p 123

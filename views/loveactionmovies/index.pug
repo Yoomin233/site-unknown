@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title we love acition movies!
+    link(rel="stylesheet" href="/static/styles/movieIndex.css")
+  body
+    -
+      const staticPrefix = '/static/videos'
+    -
+      const dates = Object.keys(movieList)
+      const sortedDates = dates.sort((a, b) => new Date(b) - new Date(a))
+    each item in sortedDates
+      p.datetitle= item
+      .container
+        -
+          const thisDateList = movieList[item]
+          //- console.log(thisDateList)
+        each item in thisDateList
+          p
+            a(href=`viewloveactionmovies?view=${item.fileName}`)= `${[item.fileName]}`
+
+    //- p 123

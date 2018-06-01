@@ -1,0 +1,21 @@
+div.container {
+    padding: 2vw;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    margin: 0;
+}
+
+body {
+    padding: 2vw;
+    box-sizing: border-box;
+    position: relative;
+}
+p.datetitle {
+    position:sticky;
+    top: 0;
+    background-color: #fff;
+}
