@@ -19,35 +19,69 @@ app.get("/loveactionmovies", async (req, res) => {
   const dirPath = path.join(__dirname, "./static/videos");
   // filter out hidden files
   const fileList = (await fs.readdir(dirPath)).filter(
-    fileName => !fileName.startsWith(".")
+    fileName =>
+      !fileName.startsWith(".") &&
+      fileName !== "fileList.json" &&
+      fileName !== "fileStat.json"
   );
-  const detailedFileListPromise = [];
-  let detailedFileList;
-  for (let i = 0; i < fileList.length; i++) {
-    const fileName = fileList[i];
-    const filePath = path.join(dirPath, fileName);
-    detailedFileListPromise.push(fs.stat(filePath));
+  let needsUpdateFlag = false;
+  // check existing fileList
+  if (fs.existsSync(path.join(__dirname, "./static/videos/fileList.json"))) {
+    const content = await fs.readJSON(
+      path.join(__dirname, "./static/videos/fileList.json")
+    );
+    // new file added
+    if (content.length !== fileList.length) {
+      needsUpdateFlag = true;
+    }
+    // if same length, no update
+  } else {
+    needsUpdateFlag = true;
   }
-  detailedFileList = await Promise.all(detailedFileListPromise);
-  // append filename
-  detailedFileList = detailedFileList.map((fileStat, index) => ({
-    ...fileStat,
-    fileName: fileList[index]
-  }));
-  const sortedByDateFileList = detailedFileList.reduce((prev, next) => {
-    const { mtime: ctime } = next;
-    const dateStr = `${ctime.getFullYear()}-${
-      ctime.getMonth() < 10
-        ? "0" + (ctime.getMonth() + 1)
-        : ctime.getMonth() + 1
-    }-${ctime.getDate() < 10 ? "0" + ctime.getDate() : ctime.getDate()}`;
-    prev[dateStr] ? prev[dateStr].push(next) : (prev[dateStr] = [next]);
-    return prev;
-  }, {});
-  res.render("loveactionmovies/index", {
-    movieList: sortedByDateFileList
-  });
-  // res.end(JSON.stringify(sortedByDateFileList));
+  if (needsUpdateFlag) {
+    await fs.writeJSON(
+      path.join(__dirname, "./static/videos/fileList.json"),
+      fileList
+    );
+    const detailedFileListPromise = [];
+    let detailedFileList;
+    for (let i = 0; i < fileList.length; i++) {
+      const fileName = fileList[i];
+      const filePath = path.join(dirPath, fileName);
+      detailedFileListPromise.push(fs.stat(filePath));
+    }
+    detailedFileList = await Promise.all(detailedFileListPromise);
+    // append filename
+    detailedFileList = detailedFileList.map((fileStat, index) => ({
+      ...fileStat,
+      fileName: fileList[index]
+    }));
+    const organizedByDateFileList = detailedFileList.reduce((prev, next) => {
+      const { mtime: ctime } = next;
+      const dateStr = `${ctime.getFullYear()}-${
+        ctime.getMonth() < 10
+          ? "0" + (ctime.getMonth() + 1)
+          : ctime.getMonth() + 1
+      }-${ctime.getDate() < 10 ? "0" + ctime.getDate() : ctime.getDate()}`;
+      prev[dateStr] ? prev[dateStr].push(next) : (prev[dateStr] = [next]);
+      return prev;
+    }, {});
+    await fs.writeJSON(
+      path.join(__dirname, "./static/videos/fileStat.json"),
+      organizedByDateFileList
+    );
+    res.render("loveactionmovies/index", {
+      movieList: organizedByDateFileList
+    });
+  } else {
+    const fileStatDetails = await fs.readJSON(
+      path.join(__dirname, "./static/videos/fileStat.json")
+    );
+    res.render("loveactionmovies/index", {
+      movieList: fileStatDetails
+    });
+  }
+  // res.end(JSON.stringify(organizedByDateFileList));
 });
 
 app.get("/viewloveactionmovies", async (req, res) => {
