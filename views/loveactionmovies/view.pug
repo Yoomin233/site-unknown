@@ -17,19 +17,6 @@ html(lang="en")
         div.videoLoadingSpin
       video(src=`${staticPrefix}/${fileName}` controls)
     p= `正在观看: ${fileName}`
-    //- -
-    //-   const staticPrefix = '/static/videos'
-    //- -
-    //-   const dates = Object.keys(movieList)
-    //-   const sortedDates = dates.sort((a, b) => new Date(b) - new Date(a))
-    //- each item in sortedDates
-    //-   .container
-    //-     p= item
-    //-   -
-    //-     const thisDateList = movieList[item]
-    //-     //- console.log(thisDateList)
-    //-   each item in thisDateList
-    //-     p
-    //-       a(href=`${staticPrefix}/${item.fileName}`)= `${[item.fileName]}`
-
-    //- p 123
+    p(style={'text-align': 'center'}) 用数字货币钱包扫描如下地址以捐赠(暂时只支持eth), 支持我开发更多更好玩的功能, 以及搬运更多视频😍😍😍!
+      br
+      img(src='/static/images/eth.png', alt="")
