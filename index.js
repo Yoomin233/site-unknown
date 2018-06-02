@@ -5,7 +5,7 @@ const fs = require("fs-extra");
 const path = require("path");
 var url = require("url");
 
-const port = 8000;
+const port = process.env.NODE_ENV === 'production' ? 80 : 8000;
 
 app.set("views", "./views");
 app.set("view engine", "pug");

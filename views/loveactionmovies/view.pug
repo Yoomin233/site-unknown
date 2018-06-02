@@ -5,11 +5,18 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
     title let's see some action movies!
-    link(rel="stylesheet" href="/static/styles/movieIndex.css")
+    link(rel="stylesheet" href="/static/styles/reset.css")
+    link(rel="stylesheet" href="/static/styles/view.css")
+    script(async src='/static/scripts/view.js')
   body
     -
       const staticPrefix = '/static/videos'
-    a(href=`${staticPrefix}/${fileName}`)= fileName
+    //- a(href=`${staticPrefix}/${fileName}`)= fileName
+    div.videoContainer
+      div.videoLoadingShade
+        div.videoLoadingSpin
+      video(src=`${staticPrefix}/${fileName}` controls)
+    p= `正在观看: ${fileName}`
     //- -
     //-   const staticPrefix = '/static/videos'
     //- -
