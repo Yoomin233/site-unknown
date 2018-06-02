@@ -6,6 +6,7 @@ const path = require("path");
 var url = require("url");
 
 const port = process.env.NODE_ENV === 'production' ? 80 : 8000;
+console.log(process.env.NODE_ENV)
 
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -101,4 +102,4 @@ app.get("/api/*", (req, res, next) => {
 //   res.send('{"ab": "3"}');
 // });
 
-app.listen(8000, () => console.log("server running at port 8000"));
+app.listen(port, () => console.log("server running at port 8000"));
